@@ -77,3 +77,22 @@ func TestResponseInvoiceSending(t *testing.T) {
 		t.Errorf("decoded output %#v does not match encoded input %#v", c.DeliveryMethod, sending.DeliveryMethod)
 	}
 }
+
+func TestResponseLedgerAccount(t *testing.T) {
+	ledgerAccount := &LedgerAccount{
+		ID: "id",
+	}
+
+	recorder := httptest.NewRecorder()
+	json.NewEncoder(recorder.Body).Encode(ledgerAccount)
+	res := &Response{recorder.Result()}
+
+	c, err := res.ledgerAccount()
+	if err != nil {
+		t.Error(err)
+	}
+
+	if c.ID != ledgerAccount.ID {
+		t.Errorf("decoded output %#v does not match encoded input %#v", c.ID, ledgerAccount.ID)
+	}
+}

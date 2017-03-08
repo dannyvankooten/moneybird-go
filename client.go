@@ -21,6 +21,7 @@ type envelope struct {
 	Invoice        *Invoice        `json:"sales_invoice,omitempty"`
 	InvoiceSending *InvoiceSending `json:"sales_invoice_sending,omitempty"`
 	InvoicePayment *InvoicePayment `json:"payment,omitempty"`
+	LedgerAccount  *LedgerAccount  `json:"ledger_account,omitempty"`
 }
 
 func (c *Client) resourceURL(path string) string {

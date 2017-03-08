@@ -33,3 +33,9 @@ func (res *Response) invoicePayment() (*InvoicePayment, error) {
 	err := json.NewDecoder(res.Body).Decode(&invoicePayment)
 	return invoicePayment, err
 }
+
+func (res *Response) ledgerAccount() (*LedgerAccount, error) {
+	var ledgerAccount *LedgerAccount
+	err := json.NewDecoder(res.Body).Decode(&ledgerAccount)
+	return ledgerAccount, err
+}
