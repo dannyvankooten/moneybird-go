@@ -1,8 +1,6 @@
 package moneybird
 
 import (
-	"encoding/json"
-	"io/ioutil"
 	"net/http"
 	"strings"
 	"testing"
@@ -26,12 +24,7 @@ func TestNewRequest(t *testing.T) {
 		Token:            "token",
 	}
 
-	data := &envelope{
-		Contact: &Contact{
-			ID: "id",
-		}}
-
-	req, _ = client.newRequest("POST", "contacts", data)
+	req, _ = client.newRequest("POST", "contacts", nil)
 	if h := req.Header.Get("Authorization"); h != "Bearer token" {
 		t.Errorf("Expected header %#v, got %#v", "Bearer token", h)
 	}
@@ -41,11 +34,4 @@ func TestNewRequest(t *testing.T) {
 		t.Errorf("Expected header %#v, got %#v", expected, h)
 	}
 
-	// test marshaling of struct
-	expectedBody, _ := json.Marshal(data)
-	body, _ := ioutil.ReadAll(req.Body)
-
-	if len(body) != len(expectedBody) {
-		t.Errorf("Request body does not have expected size")
-	}
 }

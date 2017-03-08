@@ -39,3 +39,9 @@ func (res *Response) ledgerAccount() (*LedgerAccount, error) {
 	err := json.NewDecoder(res.Body).Decode(&ledgerAccount)
 	return ledgerAccount, err
 }
+
+func (res *Response) webhook() (*Webhook, error) {
+	var webhook *Webhook
+	err := json.NewDecoder(res.Body).Decode(&webhook)
+	return webhook, err
+}

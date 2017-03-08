@@ -28,21 +28,13 @@ func (c *Client) resourceURL(path string) string {
 	return "https://moneybird.com/api/v2/" + c.AdministrationID + "/" + path
 }
 
-func (c *Client) newRequest(method string, path string, data *envelope) (*http.Request, error) {
-	var body []byte
+func (c *Client) newRequest(method string, path string, data []byte) (*http.Request, error) {
+
 	var err error
-
-	if data != nil {
-		body, err = json.Marshal(data)
-
-		if err != nil {
-			return nil, err
-		}
-	}
 
 	url := c.resourceURL(path)
 
-	req, err := http.NewRequest(method, url, bytes.NewBuffer(body))
+	req, err := http.NewRequest(method, url, bytes.NewBuffer(data))
 	if err != nil {
 		return nil, err
 	}
@@ -52,7 +44,18 @@ func (c *Client) newRequest(method string, path string, data *envelope) (*http.R
 	return req, nil
 }
 
-func (c *Client) execute(method string, path string, data *envelope) (*Response, error) {
+func (c *Client) execute(method string, path string, env *envelope) (*Response, error) {
+	var data []byte
+	var err error
+
+	if env != nil {
+		data, err = json.Marshal(env)
+
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	req, err := c.newRequest(method, path, data)
 	if err != nil {
 		return nil, err

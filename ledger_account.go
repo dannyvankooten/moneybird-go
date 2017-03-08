@@ -6,8 +6,8 @@ import "encoding/json"
 type LedgerAccount struct {
 	ID               string `json:"id,omitempty"`
 	AdministrationID int64  `json:"administration_id,omitempty"`
-	Name             string `json:"name,omitempty"`
-	AccountType      string `json:"account_type,omitempty"`
+	Name             string `json:"name"`
+	AccountType      string `json:"account_type"`
 	AccountID        string `json:"account_id,omitempty"`
 	ParentID         string `json:"parent_id,omitempty"`
 	CreatedAt        string `json:"created_at,omitempty"`
