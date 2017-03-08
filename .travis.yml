@@ -1,0 +1,12 @@
+language: go
+
+go:
+  - 1.6
+  - 1.7
+  - tip
+
+go_import_path: dannyvankooten/moneybird-go
+
+test:
+  - go vet ./...
+  - go test -v ./...

@@ -1,8 +1,9 @@
 Moneybird Go
 =============
 [![GoDoc](https://godoc.org/github.com/dannyvankooten/moneybird-go?status.svg)](https://godoc.org/github.com/dannyvankooten/moneybird-go)
+ [![Build Status](https://travis-ci.org/dannyvankooten/moneybird-go.png?branch=master)](https://travis-ci.org/dannyvankooten/moneybird-go)
 
-An unofficial Go client library for [Moneybird](https://developer.moneybird.com/). This package is still experimental and could be subject to heavy change. 
+An unofficial Go client library for [Moneybird](https://developer.moneybird.com/). This package is still experimental and could be subject to heavy change.
 
 ## Usage
 
