@@ -73,10 +73,10 @@ func (c *ContactGateway) List() ([]*Contact, error) {
 }
 
 // Get returns the contact with the specified id, or nil
-func (c *ContactGateway) Get(id string) (*Contact, error) {
+func (c *ContactGateway) Get(ID string) (*Contact, error) {
 	var err error
 
-	res, err := c.execute("GET", "contacts/"+id, nil)
+	res, err := c.execute("GET", "contacts/"+ID, nil)
 	if err != nil {
 		return nil, err
 	}

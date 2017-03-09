@@ -44,10 +44,10 @@ func (c *LedgerAccountGateway) List() ([]*LedgerAccount, error) {
 }
 
 // Get returns the ledger account with the specified id, or nil
-func (c *LedgerAccountGateway) Get(id string) (*LedgerAccount, error) {
+func (c *LedgerAccountGateway) Get(ID string) (*LedgerAccount, error) {
 	var err error
 
-	res, err := c.execute("GET", "ledger_accounts/"+id, nil)
+	res, err := c.execute("GET", "ledger_accounts/"+ID, nil)
 	if err != nil {
 		return nil, err
 	}
