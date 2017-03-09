@@ -16,12 +16,12 @@ import (
 mb := &moneybird.Client{
   Token: "token",
   AdministrationID: "administration-id-here",
-  HTTPClient: &http.Client{}
+  HTTPClient: &http.Client{},
 }
 
 contact, _ := mb.Contact().Create(&moneybird.Contact{
-	Email: "john@doe.com",
-	FirstName: "John",
+  Email: "john@doe.com",
+  FirstName: "John",
   LastName: "Doe",
 })
 ```
