@@ -8,18 +8,25 @@ An unofficial Go client library for [Moneybird](https://developer.moneybird.com/
 ## Usage
 
 ```go
-import "github.com/dannyvankooten/moneybird-go"
+import (
+  "net/http"
+  "github.com/dannyvankooten/moneybird-go"
+)
 
 mb := &moneybird.Client{
   Token: "token",
   AdministrationID: "administration-id-here",
+  HTTPClient: &http.Client{}
 }
 
-mb.Contact().Create(&moneybird.Contact{
+contact, _ := mb.Contact().Create(&moneybird.Contact{
 	Email: "john@doe.com",
 	FirstName: "John",
+  LastName: "Doe",
 })
 ```
+
+See the integration tests for some more working examples.
 
 ## Testing
 

@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func TestWorkflowGatewayAll(t *testing.T) {
+func TestWorkflowGatewayList(t *testing.T) {
 	_, err := testClient.Workflow().List()
 
 	if err != nil {

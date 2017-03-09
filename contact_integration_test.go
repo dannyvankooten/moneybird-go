@@ -1,8 +1,6 @@
 package moneybird
 
-import (
-	"testing"
-)
+import "testing"
 
 func TestContactGatewayCRUD(t *testing.T) {
 	var err error
