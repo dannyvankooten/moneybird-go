@@ -4,8 +4,8 @@ import (
 	"testing"
 )
 
-func TestTaxRateGatewayAll(t *testing.T) {
-	taxrates, err := testClient.TaxRate().All()
+func TestTaxRateGatewayList(t *testing.T) {
+	taxrates, err := testClient.TaxRate().List()
 
 	if err != nil {
 		t.Error(err)

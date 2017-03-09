@@ -25,8 +25,8 @@ func (c *Client) TaxRate() *TaxRateGateway {
 	return &TaxRateGateway{c}
 }
 
-// All returns all tax rates stored in Moneybird
-func (c *TaxRateGateway) All() ([]*TaxRate, error) {
+// List returns all tax rates stored in Moneybird
+func (c *TaxRateGateway) List() ([]*TaxRate, error) {
 	var taxrates []*TaxRate
 	var err error
 
