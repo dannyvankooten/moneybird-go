@@ -65,7 +65,7 @@ func (c *ContactGateway) List() ([]*Contact, error) {
 
 	switch res.StatusCode {
 	case 200:
-		err = json.NewDecoder(res.Body).Decode(contacts)
+		err = json.NewDecoder(res.Body).Decode(&contacts)
 		return contacts, err
 	}
 

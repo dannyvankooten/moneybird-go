@@ -35,7 +35,7 @@ func (c *WebhookGateway) List() ([]*Webhook, error) {
 
 	switch res.StatusCode {
 	case 200:
-		err = json.NewDecoder(res.Body).Decode(webhooks)
+		err = json.NewDecoder(res.Body).Decode(&webhooks)
 		return webhooks, err
 	}
 
