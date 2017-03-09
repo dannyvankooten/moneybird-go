@@ -14,7 +14,7 @@ func TestContactGatewayCRUD(t *testing.T) {
 		LastName:  "Doe",
 	})
 	if err != nil {
-		t.Error(err)
+		t.Fatal(err)
 	}
 
 	// 2. Scheduled Delete

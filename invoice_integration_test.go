@@ -36,7 +36,7 @@ func TestInvoiceGatewayCreate(t *testing.T) {
 	}
 	contact, err = testClient.Contact().Create(contact)
 	if err != nil {
-		t.Error(err)
+		t.Fatal(err)
 	}
 
 	// delete contact
