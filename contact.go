@@ -2,12 +2,10 @@ package moneybird
 
 import "encoding/json"
 
-//"time"
-
 // Contact is a MoneyBird contact
 type Contact struct {
 	ID                       string `json:"id,omitempty"`
-	AdministrationID         int64  `json:"administration_id,omitempty"`
+	AdministrationID         string `json:"administration_id,omitempty"`
 	CompanyName              string `json:"company_name,omitempty"`
 	FirstName                string `json:"firstname,omitempty"`
 	LastName                 string `json:"lastname,omitempty"`
@@ -65,13 +63,13 @@ func (c *ContactGateway) List() ([]*Contact, error) {
 		return nil, err
 	}
 
-	// TODO: Check status code here.
 	switch res.StatusCode {
 	case 200:
 		err = json.NewDecoder(res.Body).Decode(contacts)
+		return contacts, err
 	}
 
-	return contacts, err
+	return nil, res.error()
 }
 
 // Get returns the contact with the specified id, or nil
@@ -83,13 +81,12 @@ func (c *ContactGateway) Get(id string) (*Contact, error) {
 		return nil, err
 	}
 
-	// TODO: Check status code here.
 	switch res.StatusCode {
 	case 200:
 		return res.contact()
 	}
 
-	return nil, err
+	return nil, res.error()
 }
 
 // Create adds a contact to MoneyBird
@@ -104,7 +101,7 @@ func (c *ContactGateway) Create(contact *Contact) (*Contact, error) {
 		return res.contact()
 	}
 
-	return nil, err
+	return nil, res.error()
 }
 
 // Update updates an existing contact in Moneybird
@@ -119,7 +116,7 @@ func (c *ContactGateway) Update(contact *Contact) (*Contact, error) {
 		return res.contact()
 	}
 
-	return nil, err
+	return nil, res.error()
 }
 
 // Delete the given contact
@@ -134,5 +131,5 @@ func (c *ContactGateway) Delete(contact *Contact) error {
 		return nil
 	}
 
-	return err
+	return res.error()
 }

@@ -3,7 +3,6 @@ package moneybird
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"log"
 	"net/http"
 )
@@ -63,19 +62,11 @@ func (c *Client) execute(method string, path string, env *envelope) (*Response, 
 
 	log.Printf("Moneybird: %s %s\n", req.Method, req.URL)
 	res, err := c.HTTPClient.Do(req)
-	log.Printf("Moneybird: %d %s", res.StatusCode, res.Status)
+	log.Printf("Moneybird: %s", res.Status)
 
 	if err != nil {
 		return nil, err
 	}
 
-	// TODO: Move to Response class & improve.
-	if res.StatusCode > 399 {
-		var data map[string]string
-		err = json.NewDecoder(res.Body).Decode(&data)
-		log.Printf("Moneybird: error data %#v\n", data)
-		return nil, errors.New(data["error"])
-	}
-
-	return &Response{res}, err
+	return &Response{res}, nil
 }

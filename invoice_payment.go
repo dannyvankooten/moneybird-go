@@ -31,5 +31,5 @@ func (c *InvoicePaymentGateway) Create(invoice *Invoice, payment *InvoicePayment
 		return nil
 	}
 
-	return err
+	return res.error()
 }

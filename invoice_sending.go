@@ -33,5 +33,5 @@ func (c *InvoiceSendingGateway) Create(invoice *Invoice, sending *InvoiceSending
 		return nil
 	}
 
-	return err
+	return res.error()
 }

@@ -43,6 +43,7 @@ func (c *WorkflowGateway) All() ([]*Workflow, error) {
 	switch res.StatusCode {
 	case 200:
 		err = json.NewDecoder(res.Body).Decode(&workflows)
+		return workflows, err
 	}
-	return workflows, err
+	return nil, res.error()
 }

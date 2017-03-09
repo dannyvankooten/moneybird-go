@@ -5,7 +5,7 @@ import "encoding/json"
 // LedgerAccount represends a ledger account in Moneybird
 type LedgerAccount struct {
 	ID               string `json:"id,omitempty"`
-	AdministrationID int64  `json:"administration_id,omitempty"`
+	AdministrationID string `json:"administration_id,omitempty"`
 	Name             string `json:"name"`
 	AccountType      string `json:"account_type"`
 	AccountID        string `json:"account_id,omitempty"`
@@ -34,13 +34,13 @@ func (c *LedgerAccountGateway) List() ([]*LedgerAccount, error) {
 		return nil, err
 	}
 
-	// TODO: Check status code here.
 	switch res.StatusCode {
 	case 200:
 		err = json.NewDecoder(res.Body).Decode(ledgerAccounts)
+		return ledgerAccounts, err
 	}
 
-	return ledgerAccounts, err
+	return nil, res.error()
 }
 
 // Get returns the ledger account with the specified id, or nil

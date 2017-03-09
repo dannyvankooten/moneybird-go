@@ -7,7 +7,7 @@ import "encoding/json"
 // Webhook is a MoneyBird webhook
 type Webhook struct {
 	ID               string `json:"id,omitempty"`
-	AdministrationID int64  `json:"administration_id,omitempty"`
+	AdministrationID string `json:"administration_id,omitempty"`
 	URL              string `json:"url"`
 	LastHTTPStatus   string `json:"last_http_status,omitempty"`
 	LastHTTPBody     string `json:"last_http_body,omitempty"`
@@ -33,13 +33,13 @@ func (c *WebhookGateway) List() ([]*Webhook, error) {
 		return nil, err
 	}
 
-	// TODO: Check status code here.
 	switch res.StatusCode {
 	case 200:
 		err = json.NewDecoder(res.Body).Decode(webhooks)
+		return webhooks, err
 	}
 
-	return webhooks, err
+	return nil, res.error()
 }
 
 // Create adds a webhook to MoneyBird
@@ -61,13 +61,12 @@ func (c *WebhookGateway) Create(webhook *Webhook) (*Webhook, error) {
 	}
 
 	res := &Response{httpRes}
-
 	switch res.StatusCode {
 	case 201:
 		return res.webhook()
 	}
 
-	return nil, err
+	return nil, res.error()
 }
 
 // Delete the given webhook
@@ -82,5 +81,5 @@ func (c *WebhookGateway) Delete(webhook *Webhook) error {
 		return nil
 	}
 
-	return err
+	return res.error()
 }

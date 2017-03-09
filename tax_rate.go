@@ -5,7 +5,7 @@ import "encoding/json"
 // TaxRate contains info about a tax rate stored in Moneybird
 type TaxRate struct {
 	ID               string `json:"id"`
-	AdministrationID int64  `json:"administration_id,omitempty"`
+	AdministrationID string `json:"administration_id,omitempty"`
 	Name             string `json:"name"`
 	Percentage       string `json:"percentage"`
 	TaxRateType      string `json:"tax_rate_type"`
@@ -38,6 +38,8 @@ func (c *TaxRateGateway) All() ([]*TaxRate, error) {
 	switch res.StatusCode {
 	case 200:
 		err = json.NewDecoder(res.Body).Decode(&taxrates)
+		return taxrates, err
 	}
-	return taxrates, err
+
+	return nil, res.error()
 }

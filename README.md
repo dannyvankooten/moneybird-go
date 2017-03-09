@@ -21,6 +21,15 @@ mb.Contact().Create(&moneybird.Contact{
 })
 ```
 
+## Testing
+
+In order to run the integration tests, you have to configure a sandbox account in Moneybird. Before running the integration tests with `go test`, make sure the following environment variables are set.
+
+```
+export MONEYBIRD_TEST_TOKEN="your-sandbox-token"
+export MONEYBIRD_TEST_ADMINISTRATION_ID="your-sandbox-administration-id"
+```
+
 
 ## License
 

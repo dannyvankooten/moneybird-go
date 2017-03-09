@@ -2,40 +2,42 @@ package moneybird
 
 import (
 	"encoding/json"
-	"time"
+	"net/http"
 )
 
 // Invoice contains all invoice details
 type Invoice struct {
-	ID                string           `json:"id"`
-	InvoiceID         string           `json:"invoice_id,omitempty"`
-	Contact           Contact          `json:"contact"`
-	InvoiceDate       string           `json:"invoice_date"`
-	State             string           `json:"state,omitempty"`
-	Language          string           `json:"language,omitempty"`
-	Currency          string           `json:"currency,omitempty"`
-	Discount          string           `json:"discount,omitempty"`
-	Details           []InvoiceDetails `json:"details"`
-	TotalPriceExclTax string           `json:"total_price_excl_tax,omitempty"`
-	TotalPriceInclTax string           `json:"total_price_incl_tax,omitempty"`
-	PricesAreInclTax  bool             `json:"prices_are_incl_tax,omitempty"`
-	URL               string           `json:"url,omitempty"`
-	WorkflowID        string           `json:"workflow_id,omitempty"`
-	DocumentStyleID   string           `json:"document_style_id,omitempty"`
-	IdentityID        string           `json:"identity_id,omitempty"`
-	PaymentConditions string           `json:"payment_conditions,omitempty"`
-	SentAt            time.Time        `json:"sent_at,omitempty"`
-	Reference         string           `json:"reference,omitempty"`
-	CreatedAt         time.Time        `json:"created_at,omitempty"`
-	UpdatedAt         time.Time        `json:"updated_at,omitempty"`
+	ID                string            `json:"id"`
+	InvoiceID         string            `json:"invoice_id,omitempty"`
+	Contact           Contact           `json:"contact,omitempty"`
+	ContactID         string            `json:"contact_id,omitempty"`
+	UpdateContact     bool              `json:"update_contact,omitempty"`
+	InvoiceDate       string            `json:"invoice_date"`
+	State             string            `json:"state,omitempty"`
+	Language          string            `json:"language,omitempty"`
+	Currency          string            `json:"currency,omitempty"`
+	Discount          string            `json:"discount,omitempty"`
+	Details           []*InvoiceDetails `json:"details_attributes,omitempty"`
+	TotalPriceExclTax string            `json:"total_price_excl_tax,omitempty"`
+	TotalPriceInclTax string            `json:"total_price_incl_tax,omitempty"`
+	PricesAreInclTax  bool              `json:"prices_are_incl_tax,omitempty"`
+	URL               string            `json:"url,omitempty"`
+	WorkflowID        string            `json:"workflow_id,omitempty"`
+	DocumentStyleID   string            `json:"document_style_id,omitempty"`
+	IdentityID        string            `json:"identity_id,omitempty"`
+	PaymentConditions string            `json:"payment_conditions,omitempty"`
+	SentAt            string            `json:"sent_at,omitempty"`
+	Reference         string            `json:"reference,omitempty"`
+	CreatedAt         string            `json:"created_at,omitempty"`
+	UpdatedAt         string            `json:"updated_at,omitempty"`
 }
 
 // InvoiceDetails is a line on an invoice
 type InvoiceDetails struct {
-	ID                 string   `json:"id"`
-	TaxRateID          string   `json:"tax_rate_id"`
-	Amount             string   `json:"amount"`
-	Description        string   `json:"description"`
+	ID                 string   `json:"id,omitempty"`
+	TaxRateID          string   `json:"tax_rate_id,omitempty"`
+	Amount             string   `json:"amount,omitempty"`
+	Description        string   `json:"description,omitempty"`
 	Price              string   `json:"price"`
 	TaxReportReference []string `json:"tax_report_reference,omitempty"`
 }
@@ -61,11 +63,12 @@ func (c *InvoiceGateway) All() ([]*Invoice, error) {
 	}
 
 	switch res.StatusCode {
-	case 200:
+	case http.StatusOK:
 		err = json.NewDecoder(res.Body).Decode(&invoices)
+		return invoices, err
 	}
 
-	return invoices, err
+	return nil, res.error()
 }
 
 // Get returns the invoice with the specified id, or nil
@@ -76,12 +79,11 @@ func (c *InvoiceGateway) Get(ID string) (*Invoice, error) {
 	}
 
 	switch res.StatusCode {
-	case 200:
+	case http.StatusOK:
 		return res.invoice()
 	}
 
-	// TODO: return better error here.
-	return nil, err
+	return nil, res.error()
 }
 
 // Update updates the invoice in Moneybird
@@ -92,11 +94,11 @@ func (c *InvoiceGateway) Update(invoice *Invoice) (*Invoice, error) {
 	}
 
 	switch res.StatusCode {
-	case 200:
+	case http.StatusOK:
 		return res.invoice()
 	}
 
-	return nil, err
+	return nil, res.error()
 }
 
 // Create creates the invoice in Moneybird
@@ -107,11 +109,11 @@ func (c *InvoiceGateway) Create(invoice *Invoice) (*Invoice, error) {
 	}
 
 	switch res.StatusCode {
-	case 201:
+	case http.StatusCreated:
 		return res.invoice()
 	}
 
-	return nil, err
+	return nil, res.error()
 }
 
 // Delete deletes the invoice in Moneybird
@@ -122,10 +124,9 @@ func (c *InvoiceGateway) Delete(invoice *Invoice) error {
 	}
 
 	switch res.StatusCode {
-	case 200:
+	case http.StatusOK:
 		return nil
 	}
 
-	// TODO: Return the actual error here.
-	return err
+	return res.error()
 }
