@@ -8,7 +8,7 @@ import (
 // Workflow contains info about a tax rate stored in Moneybird
 type Workflow struct {
 	ID               string    `json:"id"`
-	AdministrationID int64     `json:"administration_id,omitempty"`
+	AdministrationID string    `json:"administration_id,omitempty"`
 	Type             string    `json:"type,omitempty"`
 	Name             string    `json:"name,omitempty"`
 	Default          bool      `json:"default,omitempty"`
@@ -30,8 +30,8 @@ func (c *Client) Workflow() *WorkflowGateway {
 	return &WorkflowGateway{c}
 }
 
-// All returns all workflows stored in Moneybird
-func (c *WorkflowGateway) All() ([]*Workflow, error) {
+// List returns all workflows stored in Moneybird
+func (c *WorkflowGateway) List() ([]*Workflow, error) {
 	var err error
 	var workflows []*Workflow
 

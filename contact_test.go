@@ -4,26 +4,48 @@ import (
 	"testing"
 )
 
-func TestContactGatewayCreateAndDelete(t *testing.T) {
-	i := &Contact{
+func TestContactGatewayCRUD(t *testing.T) {
+	var err error
+	var testContact *Contact
+	gateway := testClient.Contact()
+
+	// 1. Create
+	testContact, err = gateway.Create(&Contact{
 		Email:     "johndoe@email.com",
 		FirstName: "John",
 		LastName:  "Doe",
-	}
-
-	// create contact
-	o, err := testClient.Contact().Create(i)
+	})
 	if err != nil {
 		t.Error(err)
 	}
 
-	if i.Email != o.Email {
-		t.Errorf("Output field %#v does not match input field %#v.", o.Email, i.Email)
-	}
+	// 2. Scheduled Delete
+	defer func() {
+		err = gateway.Delete(testContact)
+		if err != nil {
+			t.Error(err)
+		}
+	}()
 
-	// delete contact
-	err = testClient.Contact().Delete(o)
+	// 3. Update
+	testContact.FirstName = "Peter"
+	testContact, err = gateway.Update(testContact)
 	if err != nil {
 		t.Error(err)
 	}
+
+	if testContact.FirstName != "Peter" {
+		t.Errorf("Contact was not properly updated.")
+	}
+
+	// 4. Get
+	testContact, err = gateway.Get(testContact.ID)
+	if err != nil {
+		t.Error(err)
+	}
+
+	if testContact.LastName != "Doe" {
+		t.Errorf("Invalid Contact.LastName: %#v", testContact.LastName)
+	}
+
 }

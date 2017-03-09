@@ -8,6 +8,7 @@ import (
 // Invoice contains all invoice details
 type Invoice struct {
 	ID                string            `json:"id"`
+	AdministrationID  string            `json:"administration_id,omitempty"`
 	InvoiceID         string            `json:"invoice_id,omitempty"`
 	Contact           Contact           `json:"contact,omitempty"`
 	ContactID         string            `json:"contact_id,omitempty"`
@@ -52,8 +53,8 @@ func (c *Client) Invoice() *InvoiceGateway {
 	return &InvoiceGateway{c}
 }
 
-// All returns all invoices
-func (c *InvoiceGateway) All() ([]*Invoice, error) {
+// List returns all invoices
+func (c *InvoiceGateway) List() ([]*Invoice, error) {
 	var invoices []*Invoice
 	var err error
 
@@ -124,7 +125,7 @@ func (c *InvoiceGateway) Delete(invoice *Invoice) error {
 	}
 
 	switch res.StatusCode {
-	case http.StatusOK:
+	case 204:
 		return nil
 	}
 

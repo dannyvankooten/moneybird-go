@@ -12,6 +12,7 @@ type Client struct {
 	Token            string
 	AdministrationID string
 
+	Logger     *log.Logger
 	HTTPClient *http.Client
 }
 
@@ -60,9 +61,13 @@ func (c *Client) execute(method string, path string, env *envelope) (*Response, 
 		return nil, err
 	}
 
-	log.Printf("Moneybird: %s %s\n", req.Method, req.URL)
+	if c.Logger != nil {
+		c.Logger.Printf("Moneybird: %s %s\n", req.Method, req.URL)
+	}
 	res, err := c.HTTPClient.Do(req)
-	log.Printf("Moneybird: %s", res.Status)
+	if c.Logger != nil {
+		c.Logger.Printf("Moneybird: %s", res.Status)
+	}
 
 	if err != nil {
 		return nil, err

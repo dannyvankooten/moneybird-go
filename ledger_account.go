@@ -36,7 +36,7 @@ func (c *LedgerAccountGateway) List() ([]*LedgerAccount, error) {
 
 	switch res.StatusCode {
 	case 200:
-		err = json.NewDecoder(res.Body).Decode(ledgerAccounts)
+		err = json.NewDecoder(res.Body).Decode(&ledgerAccounts)
 		return ledgerAccounts, err
 	}
 

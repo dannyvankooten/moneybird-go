@@ -5,7 +5,23 @@ import (
 	"time"
 )
 
-func TestInvoiceGatewayCreateAndDelete(t *testing.T) {
+// Because Moneybird schedules a background job when you create a new invoice, this test will fail when running too soon after a previous run.
+func TestInvoiceGatewayListAndDelete(t *testing.T) {
+	invoices, err := testClient.Invoice().List()
+	if err != nil {
+		t.Error(err)
+	}
+
+	for _, invoice := range invoices {
+		err := testClient.Invoice().Delete(invoice)
+		if err != nil {
+			t.Error(err)
+		}
+	}
+
+}
+
+func TestInvoiceGatewayCreate(t *testing.T) {
 	var err error
 	// create contact
 	contact := &Contact{
@@ -42,12 +58,5 @@ func TestInvoiceGatewayCreateAndDelete(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-
-	// TODO: delete invoice
-	// Moneybird processes a queued background task after an invoice is created, so this needs a few minutes delay.
-	// err = testClient.Invoice().Delete(invoice)
-	// if err != nil {
-	// 	t.Error(err)
-	// }
 
 }
