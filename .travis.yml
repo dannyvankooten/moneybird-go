@@ -7,6 +7,6 @@ go:
 
 go_import_path: dannyvankooten/moneybird-go
 
-test:
+script:
   - go vet ./...
   - go test -v ./...
