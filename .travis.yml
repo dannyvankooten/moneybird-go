@@ -11,6 +11,9 @@ go_import_path: dannyvankooten/moneybird-go
 before_install:
   - go get github.com/mattn/goveralls
 
+before_script: 
+  - if [[ "$TRAVIS_GO_VERSION" == "1.8" ]]; then sleep 30s; fi;
+
 script:
   - go vet ./...
   - go test -v ./... -covermode=count -coverprofile=coverage.out
