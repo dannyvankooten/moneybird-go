@@ -76,6 +76,16 @@ func TestInvoiceGatewayCRUD(t *testing.T) {
 		t.Error("Invoice.Reference was not properly updated")
 	}
 
+	// get invoice
+	invoice, err = gateway.Get(invoice.ID)
+	if err != nil {
+		t.Error(err)
+	}
+
+	if invoice.Contact.ID != contact.ID {
+		t.Errorf("Invoice.Get(): invoice contact ID does not match, got %#v", invoice.Contact.ID)
+	}
+
 	//  create invoice sending (send invoice)
 	err = testClient.InvoiceSending().Create(invoice, &InvoiceSending{
 		DeliveryMethod: "Manual",
