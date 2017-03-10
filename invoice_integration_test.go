@@ -26,7 +26,7 @@ func TestInvoiceGatewayListAndDelete(t *testing.T) {
 
 }
 
-func TestInvoiceGatewayCreate(t *testing.T) {
+func TestInvoiceGatewayCRUD(t *testing.T) {
 	var err error
 	// create contact
 	contact := &Contact{
@@ -39,7 +39,7 @@ func TestInvoiceGatewayCreate(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	// delete contact
+	// delete contact (deferred)
 	defer func() {
 		err = testClient.Contact().Delete(contact)
 		if err != nil {
@@ -47,6 +47,7 @@ func TestInvoiceGatewayCreate(t *testing.T) {
 		}
 	}()
 
+	gateway := testClient.Invoice()
 	// create invoice
 	invoice := &Invoice{
 		ContactID:   contact.ID,
@@ -59,7 +60,53 @@ func TestInvoiceGatewayCreate(t *testing.T) {
 			},
 		},
 	}
-	_, err = testClient.Invoice().Create(invoice)
+	invoice, err = gateway.Create(invoice)
+	if err != nil {
+		t.Fatal(err) // abandon test if invoice creation fails
+	}
+
+	// update invoice
+	invoice.Reference = "my-reference"
+	invoice, err = gateway.Update(invoice)
+	if err != nil {
+		t.Error(err)
+	}
+
+	if invoice.Reference != "my-reference" {
+		t.Error("Invoice.Reference was not properly updated")
+	}
+
+	//  create invoice sending (send invoice)
+	err = testClient.InvoiceSending().Create(invoice, &InvoiceSending{
+		DeliveryMethod: "Manual",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// create invoice payment (mark invoice as paid)
+	err = testClient.InvoicePayment().Create(invoice, &InvoicePayment{
+		Price:       invoice.TotalUnpaid,
+		PaymentDate: time.Now().Format("2006-01-02"),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// create invoice note
+	note, err := testClient.InvoiceNote().Create(invoice, &InvoiceNote{
+		Note: "my note",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if note.Note != "my note" {
+		t.Errorf("Note.Note does not match input string. Got %#v", note.Note)
+	}
+
+	// delete invoice note
+	err = testClient.InvoiceNote().Delete(invoice, note)
 	if err != nil {
 		t.Error(err)
 	}
