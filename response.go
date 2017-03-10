@@ -57,6 +57,12 @@ func (res *Response) invoicePayment() (*InvoicePayment, error) {
 	return invoicePayment, err
 }
 
+func (res *Response) note() (*InvoiceNote, error) {
+	var note *InvoiceNote
+	err := json.NewDecoder(res.Body).Decode(&note)
+	return note, err
+}
+
 func (res *Response) ledgerAccount() (*LedgerAccount, error) {
 	var ledgerAccount *LedgerAccount
 	err := json.NewDecoder(res.Body).Decode(&ledgerAccount)
