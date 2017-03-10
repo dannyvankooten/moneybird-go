@@ -14,14 +14,14 @@ func TestContactGatewayCRUD(t *testing.T) {
 		LastName:  "Doe",
 	})
 	if err != nil {
-		t.Fatal(err)
+		t.Fatalf("ContactGateway.Create: %s", err)
 	}
 
 	// 2. Scheduled Delete
 	defer func() {
 		err = gateway.Delete(testContact)
 		if err != nil {
-			t.Error(err)
+			t.Errorf("ContactGateway.Delete: %s", err)
 		}
 	}()
 
@@ -29,21 +29,21 @@ func TestContactGatewayCRUD(t *testing.T) {
 	testContact.FirstName = "Peter"
 	testContact, err = gateway.Update(testContact)
 	if err != nil {
-		t.Error(err)
+		t.Errorf("ContactGateway.Update: %s", err)
 	}
 
 	if testContact.FirstName != "Peter" {
-		t.Errorf("Contact was not properly updated.")
+		t.Errorf("ContactGateway.Update: first name was not properly updated")
 	}
 
 	// 4. Get
 	testContact, err = gateway.Get(testContact.ID)
 	if err != nil {
-		t.Error(err)
+		t.Errorf("ContactGateway.Get: %s", err)
 	}
 
 	if testContact.LastName != "Doe" {
-		t.Errorf("Invalid Contact.LastName: %#v", testContact.LastName)
+		t.Errorf("ContactGateway.Get: invalid last name %#v", testContact.LastName)
 	}
 
 }

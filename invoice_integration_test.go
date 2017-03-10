@@ -36,14 +36,14 @@ func TestInvoiceGatewayCRUD(t *testing.T) {
 	}
 	contact, err = testClient.Contact().Create(contact)
 	if err != nil {
-		t.Fatal(err)
+		t.Fatalf("ContactGateway.Create: %s", err)
 	}
 
 	// delete contact (deferred)
 	defer func() {
 		err = testClient.Contact().Delete(contact)
 		if err != nil {
-			t.Error(err)
+			t.Errorf("ContactGateway.Delete: %s", err)
 		}
 	}()
 
@@ -62,28 +62,28 @@ func TestInvoiceGatewayCRUD(t *testing.T) {
 	}
 	invoice, err = gateway.Create(invoice)
 	if err != nil {
-		t.Fatal(err) // abandon test if invoice creation fails
+		t.Fatalf("InvoiceGateway.Create: %s", err) // abandon test if invoice creation fails
 	}
 
 	// update invoice
 	invoice.Reference = "my-reference"
 	invoice, err = gateway.Update(invoice)
 	if err != nil {
-		t.Error(err)
+		t.Errorf("InvoiceGateway.Update: %s", err)
 	}
 
 	if invoice.Reference != "my-reference" {
-		t.Error("Invoice.Reference was not properly updated")
+		t.Error("InvoiceGateway.Update: reference was not properly updated")
 	}
 
 	// get invoice
 	invoice, err = gateway.Get(invoice.ID)
 	if err != nil {
-		t.Error(err)
+		t.Errorf("InvoiceGateway.Get: %s", err)
 	}
 
 	if invoice.Contact.ID != contact.ID {
-		t.Errorf("Invoice.Get(): invoice contact ID does not match, got %#v", invoice.Contact.ID)
+		t.Errorf("InvoiceGateway.Get: invoice contact ID does not match, got %#v", invoice.Contact.ID)
 	}
 
 	//  create invoice sending (send invoice)
@@ -91,7 +91,7 @@ func TestInvoiceGatewayCRUD(t *testing.T) {
 		DeliveryMethod: "Manual",
 	})
 	if err != nil {
-		t.Fatal(err)
+		t.Fatalf("InvoiceSendingGateway.Create: %s", err)
 	}
 
 	// create invoice payment (mark invoice as paid)
@@ -100,7 +100,7 @@ func TestInvoiceGatewayCRUD(t *testing.T) {
 		PaymentDate: time.Now().Format("2006-01-02"),
 	})
 	if err != nil {
-		t.Fatal(err)
+		t.Fatalf("InvoicePaymentGateway.Create: %s", err)
 	}
 
 	// create invoice note
@@ -108,17 +108,17 @@ func TestInvoiceGatewayCRUD(t *testing.T) {
 		Note: "my note",
 	})
 	if err != nil {
-		t.Fatal(err)
+		t.Fatalf("InvoiceNoteGateway.Create: %s", err)
 	}
 
 	if note.Note != "my note" {
-		t.Errorf("Note.Note does not match input string. Got %#v", note.Note)
+		t.Errorf("InvoiceNoteGateway.Create: note does not match input string. Got %#v", note.Note)
 	}
 
 	// delete invoice note
 	err = testClient.InvoiceNote().Delete(invoice, note)
 	if err != nil {
-		t.Error(err)
+		t.Errorf("InvoiceNoteGateway.Delete: %s", err)
 	}
 
 }
