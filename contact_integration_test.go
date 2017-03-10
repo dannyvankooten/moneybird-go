@@ -47,3 +47,10 @@ func TestContactGatewayCRUD(t *testing.T) {
 	}
 
 }
+
+func TestContactGatewayList(t *testing.T) {
+	_, err := testClient.Contact().List()
+	if err != nil {
+		t.Error(err)
+	}
+}
