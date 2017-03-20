@@ -1,7 +1,9 @@
 package moneybird
 
 import (
+	"bytes"
 	"encoding/json"
+	"io/ioutil"
 	"net/http"
 )
 
@@ -12,19 +14,27 @@ type Response struct {
 
 // APIError holds data for a MoneyBird API error
 type APIError struct {
-	Err      string              `json:"error,omitempty"`
-	Errs     map[string][]string `json:"errors,omitempty"`
-	Symbolic map[string]string   `json:"symbolic,omitempty"`
+	response *Response
+	data     map[string]interface{}
 }
 
 func (e *APIError) Error() string {
-	return e.Err
+	if v, ok := e.data["error"]; ok {
+		return v.(string)
+	}
+
+	return e.response.Status
 }
 
 func (res *Response) error() error {
-	apiErr := &APIError{}
+	apiErr := &APIError{
+		response: res,
+	}
+
+	//body, _ := ioutil.ReadAll(res.Body)
 
 	// try to decode into APIError struct
+	//err := json.Unmarshal(body, apiErr.data)
 	err := json.NewDecoder(res.Body).Decode(apiErr)
 	if err != nil {
 		return err
@@ -41,7 +51,12 @@ func (res *Response) contact() (*Contact, error) {
 
 func (res *Response) invoice() (*Invoice, error) {
 	var invoice *Invoice
-	err := json.NewDecoder(res.Body).Decode(&invoice)
+
+	// fixes an inconsistency with MoneyBird using `details_attributes` for outgoing JSON requests, but `details` for responses.
+	body, _ := ioutil.ReadAll(res.Body)
+	body = bytes.Replace(body, []byte(`"details"`), []byte(`"details_attributes"`), -1)
+
+	err := json.Unmarshal(body, &invoice)
 	return invoice, err
 }
 

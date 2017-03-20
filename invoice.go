@@ -43,7 +43,7 @@ type InvoiceDetails struct {
 	ID                 string   `json:"id,omitempty"`
 	TaxRateID          string   `json:"tax_rate_id,omitempty"`
 	Amount             string   `json:"amount,omitempty"`
-	Description        string   `json:"description,omitempty"`
+	Description        string   `json:"description"`
 	Price              string   `json:"price"`
 	TaxReportReference []string `json:"tax_report_reference,omitempty"`
 }
