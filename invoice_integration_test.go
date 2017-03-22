@@ -97,10 +97,11 @@ func TestInvoiceGatewayCRUD(t *testing.T) {
 	// create invoice payment (mark invoice as paid)
 	err = testClient.InvoicePayment().Create(invoice, &InvoicePayment{
 		Price:       invoice.TotalUnpaid,
+		PriceBase:   invoice.TotalUnpaid,
 		PaymentDate: time.Now().Format("2006-01-02"),
 	})
 	if err != nil {
-		t.Fatalf("InvoicePaymentGateway.Create: %s", err)
+		t.Fatalf("InvoicePaymentGateway.Create: %s ", err)
 	}
 
 	// create invoice note
