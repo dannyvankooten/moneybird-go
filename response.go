@@ -14,28 +14,28 @@ type Response struct {
 
 // APIError holds data for a MoneyBird API error
 type APIError struct {
-	response *Response
-	data     map[string]interface{}
+	Response *Response
+	Data     map[string]interface{}
 }
 
 func (e *APIError) Error() string {
-	if v, ok := e.data["error"]; ok {
-		return v.(string)
+	// if we got single "error" string in data, use that.
+	if err, ok := e.Data["error"]; ok {
+		if v, ok := err.(string); ok {
+			return v
+		}
 	}
 
-	return e.response.Status
+	return e.Response.Status
 }
 
 func (res *Response) error() error {
 	apiErr := &APIError{
-		response: res,
+		Response: res,
 	}
 
-	//body, _ := ioutil.ReadAll(res.Body)
-
 	// try to decode into APIError struct
-	//err := json.Unmarshal(body, apiErr.data)
-	err := json.NewDecoder(res.Body).Decode(apiErr)
+	err := json.NewDecoder(res.Body).Decode(&apiErr.Data)
 	if err != nil {
 		return err
 	}
