@@ -1,6 +1,8 @@
 package moneybird
 
-import "encoding/json"
+import (
+	"encoding/json"
+)
 
 // TaxRate contains info about a tax rate stored in Moneybird
 type TaxRate struct {

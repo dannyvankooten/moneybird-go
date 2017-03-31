@@ -22,11 +22,11 @@ func (e *APIError) Error() string {
 	// if we got single "error" string in data, use that.
 	if err, ok := e.Data["error"]; ok {
 		if v, ok := err.(string); ok {
-			return v
+			return "moneybird: " + v
 		}
 	}
 
-	return e.Response.Status
+	return "moneybird: " + e.Response.Status
 }
 
 func (res *Response) error() error {
