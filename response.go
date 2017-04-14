@@ -35,7 +35,7 @@ func (res *Response) error() error {
 	}
 
 	// try to decode into APIError struct
-	err := json.NewDecoder(res.Body).Decode(&apiErr.Data)
+	err := json.NewDecoder(res.Body).Decode(apiErr.Data)
 	if err != nil {
 		return err
 	}
@@ -53,10 +53,13 @@ func (res *Response) invoice() (*Invoice, error) {
 	var invoice *Invoice
 
 	// fixes an inconsistency with MoneyBird using `details_attributes` for outgoing JSON requests, but `details` for responses.
-	body, _ := ioutil.ReadAll(res.Body)
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return nil, err
+	}
 	body = bytes.Replace(body, []byte(`"details"`), []byte(`"details_attributes"`), -1)
 
-	err := json.Unmarshal(body, &invoice)
+	err = json.Unmarshal(body, &invoice)
 	return invoice, err
 }
 
