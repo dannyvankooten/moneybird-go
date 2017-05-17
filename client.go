@@ -3,6 +3,7 @@ package moneybird
 import (
 	"bytes"
 	"encoding/json"
+	"io/ioutil"
 	"log"
 	"net/http"
 )
@@ -66,12 +67,16 @@ func (c *Client) execute(method string, path string, env *envelope) (*Response, 
 		c.Logger.Printf("Moneybird: %s %s\n", req.Method, req.URL)
 	}
 	res, err := c.HTTPClient.Do(req)
-	if c.Logger != nil {
-		c.Logger.Printf("Moneybird: %s", res.Status)
-	}
 
 	if err != nil {
 		return nil, err
+	}
+
+	if c.Logger != nil {
+		body, _ := ioutil.ReadAll(res.Body)
+		c.Logger.Printf("Moneybird: %s", res.Status)
+		c.Logger.Printf("Moneybird: %s", body)
+		res.Body = ioutil.NopCloser(bytes.NewBuffer(body))
 	}
 
 	return &Response{res}, nil
