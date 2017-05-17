@@ -35,7 +35,7 @@ func (res *Response) error() error {
 	}
 
 	// try to decode into APIError struct
-	err := json.NewDecoder(res.Body).Decode(apiErr.Data)
+	err := json.NewDecoder(res.Body).Decode(&apiErr.Data)
 	if err != nil {
 		return err
 	}
