@@ -4,7 +4,7 @@ package moneybird
 type InvoicePayment struct {
 	PaymentDate         string `json:"payment_date"`
 	Price               string `json:"price"`
-	PriceBase           string `json:"price_base"`
+	PriceBase           string `json:"price_base,omitempty"`
 	FinancialAccountID  int64  `json:"financial_account_id,omitempty"`
 	FinancialMutationID int64  `json:"financial_mutation_id,omitempty"`
 }
