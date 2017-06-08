@@ -31,6 +31,7 @@ type Invoice struct {
 	Details           []*InvoiceDetails `json:"details_attributes,omitempty"`
 	TotalPaid         string            `json:"total_paid,omitempty"`
 	TotalUnpaid       string            `json:"total_unpaid,omitempty"`
+	TotalUnpaidBase   string            `json:"total_unpaid_base,omitempty"`
 	PricesAreInclTax  bool              `json:"prices_are_incl_tax,omitempty"`
 	TotalPriceExclTax string            `json:"total_price_excl_tax,omitempty"`
 	TotalPriceInclTax string            `json:"total_price_incl_tax,omitempty"`
