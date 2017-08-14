@@ -47,9 +47,7 @@ type InvoiceDetails struct {
 	Period          string `json:"period,omitempty"`
 	Amount          string `json:"amount,omitempty"`
 	TaxRateID       string `json:"tax_rate_id,omitempty"`
-	LedgerAccountID int    `json:"ledger_account_id,omitempty"`
-	ProductID       int    `json:"product_id,omitempty"`
-	RowOrder        int    `json:"row_order,omitempty"`
+	LedgerAccountID string `json:"ledger_account_id,omitempty"`
 }
 
 // InvoiceGateway encapsulates all /sales_invoices related endpoints
