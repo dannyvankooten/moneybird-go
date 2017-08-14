@@ -41,12 +41,15 @@ type Invoice struct {
 
 // InvoiceDetails is a line on an invoice
 type InvoiceDetails struct {
-	ID                 string   `json:"id,omitempty"`
-	TaxRateID          string   `json:"tax_rate_id,omitempty"`
-	Amount             string   `json:"amount,omitempty"`
-	Description        string   `json:"description"`
-	Price              string   `json:"price"`
-	TaxReportReference []string `json:"tax_report_reference,omitempty"`
+	ID              string `json:"id,omitempty"`
+	Description     string `json:"description"`
+	Price           string `json:"price"`
+	Period          string `json:"period,omitempty"`
+	Amount          string `json:"amount,omitempty"`
+	TaxRateID       string `json:"tax_rate_id,omitempty"`
+	LedgerAccountID int    `json:"ledger_account_id,omitempty"`
+	ProductID       int    `json:"product_id,omitempty"`
+	RowOrder        int    `json:"row_order,omitempty"`
 }
 
 // InvoiceGateway encapsulates all /sales_invoices related endpoints
