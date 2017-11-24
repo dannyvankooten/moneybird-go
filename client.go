@@ -64,7 +64,7 @@ func (c *Client) execute(method string, path string, env *envelope) (*Response, 
 	}
 
 	if c.Logger != nil {
-		c.Logger.Printf("Moneybird: %s %s\n", req.Method, req.URL)
+		c.Logger.Printf("Moneybird: %s %s %s\n", req.Method, req.URL, req.Body)
 	}
 	res, err := c.HTTPClient.Do(req)
 
