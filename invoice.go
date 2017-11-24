@@ -48,6 +48,7 @@ type InvoiceDetails struct {
 	Amount          string `json:"amount,omitempty"`
 	TaxRateID       string `json:"tax_rate_id,omitempty"`
 	LedgerAccountID string `json:"ledger_account_id,omitempty"`
+	Destroy         bool   `json:"_destroy,omitempty"`
 }
 
 // InvoiceGateway encapsulates all /sales_invoices related endpoints
