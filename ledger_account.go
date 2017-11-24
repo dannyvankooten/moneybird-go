@@ -2,7 +2,7 @@ package moneybird
 
 import "encoding/json"
 
-// LedgerAccount represends a ledger account in Moneybird
+// LedgerAccount represents a ledger account in Moneybird
 type LedgerAccount struct {
 	ID               string `json:"id,omitempty"`
 	AdministrationID string `json:"administration_id,omitempty"`
