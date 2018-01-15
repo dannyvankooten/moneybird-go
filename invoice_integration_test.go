@@ -16,7 +16,7 @@ func TestInvoiceGatewayListAndDelete(t *testing.T) {
 		err := testClient.Invoice().Delete(invoice)
 		if err != nil {
 			// let's ignore this error for now... (see func doc)
-			if err.Error() == "Sales invoice cannot be destroyed" {
+			if err.Error() == "moneybird: Sales invoice cannot be destroyed" {
 				continue
 			}
 
