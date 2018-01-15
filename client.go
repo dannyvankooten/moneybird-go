@@ -74,8 +74,8 @@ func (c *Client) execute(method string, path string, env *envelope) (*Response, 
 
 	if c.Logger != nil {
 		body, _ := ioutil.ReadAll(res.Body)
-		c.Logger.Printf("Moneybird: %s", res.Status)
-		c.Logger.Printf("Moneybird: %s", body)
+		c.Logger.Printf("Moneybird: %s\n", res.Status)
+		c.Logger.Printf("Moneybird: %s\n", body)
 		res.Body = ioutil.NopCloser(bytes.NewBuffer(body))
 	}
 
