@@ -21,13 +21,13 @@ func (c *Client) InvoicePayment() *InvoicePaymentGateway {
 
 // Create marks the invoice as paid in Moneybird
 func (c *InvoicePaymentGateway) Create(invoice *Invoice, payment *InvoicePayment) error {
-	res, err := c.execute("PATCH", "sales_invoices/"+invoice.ID+"/register_payment", &envelope{InvoicePayment: payment})
+	res, err := c.execute("POST", "sales_invoices/"+invoice.ID+"/payments", &envelope{InvoicePayment: payment})
 	if err != nil {
 		return err
 	}
 
 	switch res.StatusCode {
-	case 200:
+	case 201:
 		return nil
 	}
 
