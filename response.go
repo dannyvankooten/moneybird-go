@@ -30,6 +30,7 @@ func (e *APIError) Error() string {
 }
 
 func (res *Response) error() error {
+	defer res.Body.Close()
 	apiErr := &APIError{
 		Response: res,
 	}
@@ -44,12 +45,14 @@ func (res *Response) error() error {
 }
 
 func (res *Response) contact() (*Contact, error) {
+	defer res.Body.Close()
 	var contact *Contact
 	err := json.NewDecoder(res.Body).Decode(&contact)
 	return contact, err
 }
 
 func (res *Response) invoice() (*Invoice, error) {
+	defer res.Body.Close()
 	var invoice *Invoice
 
 	// fixes an inconsistency with MoneyBird using `details_attributes` for outgoing JSON requests, but `details` for responses.
@@ -64,30 +67,35 @@ func (res *Response) invoice() (*Invoice, error) {
 }
 
 func (res *Response) invoiceSending() (*InvoiceSending, error) {
+	defer res.Body.Close()
 	var invoiceSending *InvoiceSending
 	err := json.NewDecoder(res.Body).Decode(&invoiceSending)
 	return invoiceSending, err
 }
 
 func (res *Response) invoicePayment() (*InvoicePayment, error) {
+	defer res.Body.Close()
 	var invoicePayment *InvoicePayment
 	err := json.NewDecoder(res.Body).Decode(&invoicePayment)
 	return invoicePayment, err
 }
 
 func (res *Response) note() (*InvoiceNote, error) {
+	defer res.Body.Close()
 	var note *InvoiceNote
 	err := json.NewDecoder(res.Body).Decode(&note)
 	return note, err
 }
 
 func (res *Response) ledgerAccount() (*LedgerAccount, error) {
+	defer res.Body.Close()
 	var ledgerAccount *LedgerAccount
 	err := json.NewDecoder(res.Body).Decode(&ledgerAccount)
 	return ledgerAccount, err
 }
 
 func (res *Response) webhook() (*Webhook, error) {
+	defer res.Body.Close()
 	var webhook *Webhook
 	err := json.NewDecoder(res.Body).Decode(&webhook)
 	return webhook, err
