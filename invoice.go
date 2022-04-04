@@ -37,6 +37,7 @@ type Invoice struct {
 	TotalPriceInclTax string            `json:"total_price_incl_tax,omitempty"`
 	URL               string            `json:"url,omitempty"`
 	Notes             []*InvoiceNote    `json:"notes,omitempty"`
+	Payments          []*InvoicePayment `json:"payments,omitempty"`
 }
 
 // InvoiceDetails is a line on an invoice
