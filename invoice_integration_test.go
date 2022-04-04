@@ -104,6 +104,33 @@ func TestInvoiceGatewayCRUD(t *testing.T) {
 		t.Fatalf("InvoicePaymentGateway.Create: %s ", err)
 	}
 
+	// refetch invoice to have invoice with correct payments
+	invoice, err = gateway.Get(invoice.ID)
+	if err != nil {
+		t.Errorf("InvoiceGateway.Get: %s", err)
+	}
+
+	if len(invoice.Payments) != 1 {
+		t.Errorf("Invoice doesn't have 1 payment, got %d", len(invoice.Payments))
+	}
+
+	// delete payment
+	err = gateway.InvoicePayment().Delete(invoice, invoice.Payments[0])
+
+	if err != nil {
+		t.Fatalf("InvoicePaymentGateway.Delete: %s ", err)
+	}
+
+	// refetch invoice to have invoice with correct payments
+	invoice, err = gateway.Get(invoice.ID)
+	if err != nil {
+		t.Errorf("InvoiceGateway.Get: %s", err)
+	}
+
+	if len(invoice.Payments) != 0 {
+		t.Errorf("Invoice doesn't have 0 payments, got %d", len(invoice.Payments))
+	}
+
 	// create invoice note
 	note, err := testClient.InvoiceNote().Create(invoice, &InvoiceNote{
 		Note: "my note",
