@@ -23,6 +23,6 @@ jobs:
 
     - name: Test
       env:
-        MONEYBIRD_TEST_TOKEN: ${{ secrets.MONEYBIRD_TEST_TOKEN }}
-        MONEYBIRD_TEST_ADMINISTRATION_ID=: ${{ secrets.MONEYBIRD_TEST_ADMINISTRATION_ID }}
+        MONEYBIRD_TEST_TOKEN: "${{ secrets.MONEYBIRD_TEST_TOKEN }}"
+        MONEYBIRD_TEST_ADMINISTRATION_ID=: "${{ secrets.MONEYBIRD_TEST_ADMINISTRATION_ID }}"
       run: go test -v ./...
