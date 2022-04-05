@@ -2,6 +2,7 @@ package moneybird
 
 // InvoicePayment contains info on how the invoice is paid
 type InvoicePayment struct {
+	ID                  string `json:"id,omitempty"`
 	PaymentDate         string `json:"payment_date"`
 	Price               string `json:"price"`
 	PriceBase           string `json:"price_base,omitempty"`
@@ -28,6 +29,21 @@ func (c *InvoicePaymentGateway) Create(invoice *Invoice, payment *InvoicePayment
 
 	switch res.StatusCode {
 	case 201:
+		return nil
+	}
+
+	return res.error()
+}
+
+// Delete payment of invoice in Moneybird
+func (c *InvoicePaymentGateway) Delete(invoice *Invoice, payment *InvoicePayment) error {
+	res, err := c.execute("DELETE", "sales_invoices/"+invoice.ID+"/payments/"+payment.ID, nil)
+	if err != nil {
+		return err
+	}
+
+	switch res.StatusCode {
+	case 204:
 		return nil
 	}
 
